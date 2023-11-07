@@ -1,14 +1,19 @@
 package ru.smak.l4k06x_2023_11_07.viewmodels
 
+import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
+import ru.smak.l4k06x_2023_11_07.R
 
-class MainViewModel : ViewModel() {
+class MainViewModel(app: Application) : AndroidViewModel(application = app) {
 
-    var title by mutableStateOf("Название приложения")
+    var viewType by mutableStateOf(ViewType.MAIN_VIEW)
+
+    var title by mutableStateOf(app.applicationContext.getString(R.string.app_title))
 
     val textList = SnapshotStateList<String>()
 
@@ -27,8 +32,17 @@ class MainViewModel : ViewModel() {
     }
 
     fun addText() {
-        
+        viewType = ViewType.NEW_TEXT_VIEW
+    }
+
+    fun saveText(s: String) {
+        textList.add(s)
+        viewType = ViewType.MAIN_VIEW
     }
 
 
+}
+
+enum class ViewType{
+    MAIN_VIEW, NEW_TEXT_VIEW
 }
